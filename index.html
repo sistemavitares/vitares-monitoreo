@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>VITARES | Monitoreo Comunitario</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: #f3f7f5;
+      color: #17352a;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      padding: 40px 28px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .location-icon {
+      font-size: 55px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      margin: 8px 0 25px;
+      font-size: 18px;
+      font-weight: 500;
+      color: #557066;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #53645e;
+      margin-bottom: 28px;
+    }
+
+    button {
+      width: 100%;
+      padding: 17px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #176b4d;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #status {
+      margin-top: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 22px;
+    }
+
+    .privacy {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #e6ece9;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #89958f;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="location-icon">📍</div>
+
+    <h1>VITARES</h1>
+
+    <h2>Sistema de Monitoreo Comunitario</h2>
+
+    <p>
+      Para registrar correctamente la observación necesitamos
+      conocer la ubicación donde se realiza el monitoreo.
+    </p>
+
+    <button id="locationButton" onclick="obtenerUbicacion()">
+      📍 Registrar ubicación y continuar
+    </button>
+
+    <div id="status"></div>
+
+    <div class="privacy">
+      Tu ubicación será utilizada únicamente como parte
+      del registro de monitoreo comunitario.
+    </div>
+
+  </div>
+
+<script>
+
+const FORM_URL =
+"https://docs.google.com/forms/d/e/1FAIpQLSdR42Pe3HpEKsfcVZKZf2Rt81WxYB7dAciPxB3cxZklHltJpw/viewform?usp=pp_url&entry.318419327=";
+
+function obtenerUbicacion() {
+
+  const status = document.getElementById("status");
+  const button = document.getElementById("locationButton");
+
+  if (!navigator.geolocation) {
+    status.innerHTML =
+      "❌ Este dispositivo no permite obtener la ubicación.";
+    return;
+  }
+
+  button.disabled = true;
+  status.innerHTML =
+    "📡 Obteniendo tu ubicación...";
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+      const latitud = position.coords.latitude;
+      const longitud = position.coords.longitude;
+
+      const ubicacion =
+        latitud.toFixed(6) + "," + longitud.toFixed(6);
+
+      status.innerHTML =
+        "✅ Ubicación registrada correctamente.<br>Abriendo formulario...";
+
+      const destino =
+        FORM_URL + encodeURIComponent(ubicacion);
+
+      setTimeout(function() {
+        window.location.href = destino;
+      }, 700);
+
+    },
+
+    function(error) {
+
+      button.disabled = false;
+
+      switch(error.code) {
+
+        case error.PERMISSION_DENIED:
+          status.innerHTML =
+            "⚠️ Necesitamos permiso para acceder a tu ubicación. Activa el permiso de ubicación e inténtalo nuevamente.";
+          break;
+
+        case error.POSITION_UNAVAILABLE:
+          status.innerHTML =
+            "⚠️ No pudimos determinar tu ubicación. Verifica que el GPS esté activado.";
+          break;
+
+        case error.TIMEOUT:
+          status.innerHTML =
+            "⚠️ La ubicación está tardando demasiado. Inténtalo nuevamente.";
+          break;
+
+        default:
+          status.innerHTML =
+            "⚠️ No pudimos obtener tu ubicación. Inténtalo nuevamente.";
+      }
+    },
+
+    {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 0
+    }
+
+  );
+
+}
+
+</script>
+
+</body>
+</html>
