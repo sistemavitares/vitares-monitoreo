@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>VITARES | Monitoreo Comunitario</title>
+  <title>VITARES | Sistema de Monitoreo Comunitario</title>
 
   <style>
     * {
@@ -14,154 +14,407 @@
     body {
       margin: 0;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      font-family: Arial, sans-serif;
-      background: #f3f7f5;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(
+          rgba(245, 250, 247, 0.90),
+          rgba(245, 250, 247, 0.97)
+        ),
+        url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1800&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: #17352a;
     }
 
-    .card {
-      width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      padding: 40px 28px;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
     }
 
-    .location-icon {
-      font-size: 55px;
-      margin-bottom: 16px;
+    .container {
+      width: 100%;
+      max-width: 1050px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 38px;
+    }
+
+    .logo-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      transform: rotate(45deg);
+    }
+
+    .logo-icon span {
+      background: #16834f;
+      border-radius: 20px 4px 20px 4px;
     }
 
     h1 {
+      font-size: 42px;
       margin: 0;
-      font-size: 34px;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      color: #174f3b;
     }
 
-    h2 {
-      margin: 8px 0 25px;
-      font-size: 18px;
-      font-weight: 500;
-      color: #557066;
+    .subtitle {
+      font-size: 21px;
+      margin: 8px 0 0;
+      font-weight: 600;
+      color: #274b3e;
     }
 
-    p {
-      font-size: 16px;
+    .intro {
+      max-width: 650px;
+      margin: 13px auto 0;
+      color: #62756e;
+      font-size: 15px;
       line-height: 1.6;
-      color: #53645e;
-      margin-bottom: 28px;
     }
 
-    button {
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(23,107,77,0.12);
+      border-radius: 24px;
+      padding: 38px;
+      box-shadow: 0 15px 45px rgba(26,65,51,0.09);
+      transition: 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 360px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 55px rgba(26,65,51,0.14);
+    }
+
+    .icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      margin-bottom: 25px;
+    }
+
+    .location .icon {
+      background: #e5f5ed;
+    }
+
+    .dashboard .icon {
+      background: #e8f1fb;
+    }
+
+    .card h2 {
+      font-size: 25px;
+      margin: 0 0 12px;
+      color: #17352a;
+    }
+
+    .card p {
+      color: #65756f;
+      line-height: 1.65;
+      margin: 0 0 26px;
+      font-size: 15px;
+    }
+
+    .features {
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+      color: #52655e;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .features li::before {
+      content: "✓";
+      color: #16834f;
+      font-weight: bold;
+      margin-right: 9px;
+    }
+
+    .button {
       width: 100%;
+      border: 0;
+      border-radius: 13px;
       padding: 17px 20px;
-      border: none;
-      border-radius: 12px;
-      background: #176b4d;
-      color: white;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      margin-top: auto;
+      transition: 0.2s;
+    }
+
+    .primary {
+      background: #16834f;
+      color: white;
+    }
+
+    .primary:hover {
+      background: #116b40;
+    }
+
+    .secondary {
+      background: #173f69;
+      color: white;
+    }
+
+    .secondary:hover {
+      background: #102f50;
     }
 
     button:disabled {
       opacity: 0.6;
-      cursor: not-allowed;
+      cursor: wait;
     }
 
     #status {
-      margin-top: 18px;
-      font-size: 14px;
+      margin-top: 14px;
+      font-size: 13px;
       line-height: 1.5;
-      min-height: 22px;
+      min-height: 20px;
+      color: #52655e;
+    }
+
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+      color: #7a8983;
+      font-size: 12px;
     }
 
     .privacy {
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid #e6ece9;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #89958f;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 760px) {
+
+      .page {
+        padding: 30px 17px;
+        align-items: flex-start;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
+        padding: 28px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
+<div class="page">
 
-    <div class="location-icon">📍</div>
+  <div class="container">
 
-    <h1>VITARES</h1>
+    <div class="header">
 
-    <h2>Sistema de Monitoreo Comunitario</h2>
+      <div class="logo-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-    <p>
-      Para registrar correctamente la observación necesitamos
-      conocer la ubicación donde se realiza el monitoreo.
-    </p>
+      <h1>VITARES</h1>
 
-    <button id="locationButton" onclick="obtenerUbicacion()">
-      📍 Registrar ubicación y continuar
-    </button>
+      <div class="subtitle">
+        Sistema de Monitoreo Comunitario
+      </div>
 
-    <div id="status"></div>
+      <div class="intro">
+        Una herramienta para registrar, visualizar y dar seguimiento
+        a las condiciones y cambios observados en el territorio.
+      </div>
 
-    <div class="privacy">
-      Tu ubicación será utilizada únicamente como parte
-      del registro de monitoreo comunitario.
+    </div>
+
+
+    <div class="cards">
+
+      <!-- REGISTRAR -->
+
+      <div class="card location">
+
+        <div class="icon">📍</div>
+
+        <h2>Registrar monitoreo</h2>
+
+        <p>
+          Registra una nueva observación realizada en el territorio.
+          El sistema guardará automáticamente la ubicación del registro.
+        </p>
+
+        <ul class="features">
+          <li>Ubicación GPS automática</li>
+          <li>Registro de observaciones</li>
+          <li>Evidencia fotográfica</li>
+        </ul>
+
+        <button
+          class="button primary"
+          id="locationButton"
+          onclick="obtenerUbicacion()">
+
+          Registrar monitoreo →
+
+        </button>
+
+        <div id="status"></div>
+
+      </div>
+
+
+      <!-- DASHBOARD -->
+
+      <div class="card dashboard">
+
+        <div class="icon">📊</div>
+
+        <h2>Consultar resultados</h2>
+
+        <p>
+          Explora los registros realizados por la comunidad y consulta
+          el estado actual de los territorios monitoreados.
+        </p>
+
+        <ul class="features">
+          <li>Resumen general</li>
+          <li>Monitoreo territorial</li>
+          <li>Alertas y acciones</li>
+          <li>Participación comunitaria</li>
+        </ul>
+
+        <a
+          class="button secondary"
+          href="https://datastudio.google.com/reporting/ca1e99f0-3ccc-43f9-b3b9-4bd91206caf4"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          Consultar dashboard →
+
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer">
+
+      VITARES · Monitoreo comunitario para territorios más sostenibles
+
+      <div class="privacy">
+        La ubicación se utiliza únicamente como parte del registro
+        de monitoreo comunitario.
+      </div>
+
     </div>
 
   </div>
+
+</div>
+
 
 <script>
 
 const FORM_URL =
 "https://docs.google.com/forms/d/e/1FAIpQLSdR42Pe3HpEKsfcVZKZf2Rt81WxYB7dAciPxB3cxZklHltJpw/viewform?usp=pp_url&entry.318419327=";
 
+
 function obtenerUbicacion() {
 
-  const status = document.getElementById("status");
-  const button = document.getElementById("locationButton");
+  const status =
+    document.getElementById("status");
+
+  const button =
+    document.getElementById("locationButton");
+
 
   if (!navigator.geolocation) {
+
     status.innerHTML =
       "❌ Este dispositivo no permite obtener la ubicación.";
+
     return;
   }
 
+
   button.disabled = true;
+
   status.innerHTML =
     "📡 Obteniendo tu ubicación...";
+
 
   navigator.geolocation.getCurrentPosition(
 
     function(position) {
 
-      const latitud = position.coords.latitude;
-      const longitud = position.coords.longitude;
+      const latitud =
+        position.coords.latitude;
+
+      const longitud =
+        position.coords.longitude;
 
       const ubicacion =
-        latitud.toFixed(6) + "," + longitud.toFixed(6);
+        latitud.toFixed(6) +
+        "," +
+        longitud.toFixed(6);
+
 
       status.innerHTML =
-        "✅ Ubicación registrada correctamente.<br>Abriendo formulario...";
+        "✅ Ubicación registrada. Abriendo formulario...";
+
 
       const destino =
-        FORM_URL + encodeURIComponent(ubicacion);
+        FORM_URL +
+        encodeURIComponent(ubicacion);
+
 
       setTimeout(function() {
-        window.location.href = destino;
-      }, 700);
+
+        window.location.href =
+          destino;
+
+      }, 600);
 
     },
+
 
     function(error) {
 
@@ -170,25 +423,37 @@ function obtenerUbicacion() {
       switch(error.code) {
 
         case error.PERMISSION_DENIED:
+
           status.innerHTML =
-            "⚠️ Necesitamos permiso para acceder a tu ubicación. Activa el permiso de ubicación e inténtalo nuevamente.";
+            "⚠️ Para registrar el monitoreo debes permitir el acceso a tu ubicación.";
+
           break;
+
 
         case error.POSITION_UNAVAILABLE:
+
           status.innerHTML =
             "⚠️ No pudimos determinar tu ubicación. Verifica que el GPS esté activado.";
+
           break;
+
 
         case error.TIMEOUT:
+
           status.innerHTML =
             "⚠️ La ubicación está tardando demasiado. Inténtalo nuevamente.";
+
           break;
 
+
         default:
+
           status.innerHTML =
             "⚠️ No pudimos obtener tu ubicación. Inténtalo nuevamente.";
       }
+
     },
+
 
     {
       enableHighAccuracy: true,
